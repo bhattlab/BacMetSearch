@@ -11,7 +11,7 @@ def cli():
 
 @cli.command(short_help='Run bacmetsearch on a bacterial isolate genome.')
 @click.argument('fasta', type=click.Path(exists=True))
-@click.option('--outdir', '-o', default='bacmetsearch_isolate_uhgg_output', help='The name of the output directory.')
+@click.option('--outdir', '-o', default='bacmetsearch_isolate_output', help='The name of the output directory.')
 @click.option('--prefix', '-prefix', default='bacmetsearch', help='The prefix of all files in the output directory.')
 @click.option('--force/--no-force', default=False, help="Force overwriting of output directory.")
 @click.option('--threads', '-t', default=16, help="Number of threads to use for diamond searches.")
@@ -30,7 +30,7 @@ def isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_
 
 @cli.command(short_help='Run bacmetsearch on a metagenomic assembly.')
 @click.argument('fasta', type=click.Path(exists=True))
-@click.option('--outdir', '-o', default='bacmetsearch_meta_refbank_output', help='The name of the output directory.')
+@click.option('--outdir', '-o', default='bacmetsearch_meta_output', help='The name of the output directory.')
 @click.option('--prefix', '-prefix', default='bacmetsearch', help='The prefix of all files in the output directory.')
 @click.option('--force/--no-force', default=False, help="Force overwriting of output directory.")
 @click.option('--threads', '-t', default=16, help="Number of threads to use for diamond searches.")
