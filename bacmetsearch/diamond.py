@@ -21,9 +21,16 @@ def parse_diamond_search(diamond_search):
             qlen, slen, qstart, qend, sstart, send = int(qlen), int(slen), int(qstart), int(qend), int(sstart), int(send)
             length, evalue, bitscore = int(length), float(evalue), float(bitscore)
 
-            finding = (sseqid, bitscore)
+
             qaln = qend - qstart
             saln = send - sstart
+
+            out = {
+                'qseqid': qseqid, 'sseqid': sseqid, 'qlen': qlen, 'slen': slen, 'pident': pident, 'length': length,
+                'mismatch': mismatch, 'gapopen': gapopen, 'qstart': qstart, 'qend': qend,
+                'sstart': sstart, 'send': send, 'evalue': evalue, 'bitscore': bitscore, 'qaln':qaln, 'saln':saln,
+                'size_diff_prop': min([qlen, slen]) / max([qlen, slen]), 'alnlen_prop': alnlength / min([qlen, slen])
+            }
 
             query_smaller = True
             if slen > qlen:
@@ -32,7 +39,7 @@ def parse_diamond_search(diamond_search):
             if evalue >= 1e-6:
                 continue
 
-            if min([qlen, slen]) / max([qlen, slen]) < 0.85:
+            if out['size_diff_prop'] < 0.85:
                 continue
 
             if query_smaller:
@@ -40,14 +47,14 @@ def parse_diamond_search(diamond_search):
             else:
                 alnlength = saln
 
-            if alnlength / min([qlen, slen]) < 0.85:
+            if out['alnlen_prop'] < 0.85:
                 continue
 
             if qseqid not in gene2bacmet:
-                gene2bacmet[qseqid] = finding
+                gene2bacmet[qseqid] = out
             else:
-                if finding[-1] > gene2bacmet[qseqid][-1]:
-                    gene2bacmet[qseqid] = finding
+                if out['bitscore'] > gene2bacmet[qseqid]['bitscore']:
+                    gene2bacmet[qseqid] = out
 
     print(gene2bacmet)
     #SeqIO.write(records, outfile, 'fasta')
