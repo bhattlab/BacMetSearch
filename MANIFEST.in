@@ -1,4 +1,6 @@
-include bacmetsearch/data/refbank_markers_one.tsv
-include bacmetsearch/data/refbank_markers_onezero.tsv
+bacmetsearch/data/BacMet2_EXP_database.dmnd
+bacmetsearch/data/BacMet2_EXP.mapping.tsv
+bacmetsearch/data/BacMet2_predicted_database.dmnd
+bacmetsearch/data/BacMet2_PRE.mapping.tsv
 include genomesearch/bin/prodigal.linux
 include genomesearch/bin/diamond
