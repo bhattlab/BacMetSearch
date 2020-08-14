@@ -3,8 +3,9 @@ from subprocess import run, DEVNULL
 
 
 def run_diamond(protein_fasta_path, outfile, threads, max_target_seqs, min_percent_identity, database):
-    command = '{0} blastp --id {5} -k {6} --query {1} --out {2}.dmd.tsv --outfmt 6 qseqid sseqid qlen slen pident ' \
-              'length mismatch gapopen qstart qend sstart send evalue bitscore --db {3} --threads {4}'.format(
+    command = '{0} blastp --no-auto-append --id {5} -k {6} --query {1} --out {2}.dmd.tsv --outfmt 6 ' \
+              'qseqid sseqid qlen slen pident length mismatch gapopen qstart qend sstart send evalue bitscore --db {3} ' \
+              '--threads {4}'.format(
         DIAMOND_PATH, protein_fasta_path, outfile, database, threads, min_percent_identity, max_target_seqs)
     print('diamond command:', command)
 
