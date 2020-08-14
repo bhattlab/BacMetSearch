@@ -39,8 +39,13 @@ def _isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent
         proteome_path = fasta
     prodigal_end = time.time()
 
-    diamond_path = join(tmpdir, 'diamond.tsv')
-    run_diamond(proteome_path, diamond_path, threads, max_target_seqs, min_percent_identity)
+    diamond_exp_path = join(tmpdir, 'diamond.exp.tsv')
+    run_diamond(proteome_path, diamond_path, threads, max_target_seqs, min_percent_identity, BACMET2_EXPERIMENTAL_DMND)
+
+    diamond_pred_path = join(tmpdir, 'diamond.pred.tsv')
+    run_diamond(proteome_path, diamond_path, threads, max_target_seqs, min_percent_identity, BACMET2_PREDICTED_DMND)
+
+
 
 
     if not keep_intermediate:

@@ -9,10 +9,10 @@ def run_diamond(protein_fasta_path, outfile, threads, max_target_seqs, min_perce
     run(command.split(), stdout=DEVNULL, stderr=DEVNULL)
 
 
-def parse_diamond_search():
+def parse_diamond_search(diamond_search):
 
     top_markers = dict()
-    with open(outfile + '.dmd.tsv') as infile:
+    with open(diamond_search) as infile:
         for line in infile:
             qseqid, sseqid, qlen, slen, pident, length, mismatch, gapopen, qstart, qend, sstart, send, evalue, bitscore =  line.strip().split('\t')
             qlen, slen, qstart, qend, sstart, send = int(qlen), int(slen), int(qstart), int(qend), int(sstart), int(send)

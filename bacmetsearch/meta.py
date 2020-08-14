@@ -43,10 +43,10 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
     prodigal_end = time.time()
 
     diamond_exp_path = join(tmpdir, 'diamond.exp.tsv')
-    run_diamond(proteome_path, diamond_path, threads, max_target_seqs, min_percent_identity, BACMET2_EXPERIMENTAL_DMND)
+    run_diamond(proteome_path, diamond_exp_path, threads, max_target_seqs, min_percent_identity, BACMET2_EXPERIMENTAL_DMND)
 
     diamond_pred_path = join(tmpdir, 'diamond.pred.tsv')
-    run_diamond(proteome_path, diamond_path, threads, max_target_seqs, min_percent_identity, BACMET2_PREDICTED_DMND)
+    run_diamond(proteome_path, diamond_pred_path, threads, max_target_seqs, min_percent_identity, BACMET2_PREDICTED_DMND)
 
     if not keep_intermediate:
         shutil.rmtree(tmpdir)
