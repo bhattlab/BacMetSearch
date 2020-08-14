@@ -25,6 +25,15 @@ def parse_diamond_search(diamond_search):
             qaln = qend - qstart
             saln = send - sstart
 
+            query_smaller = True
+            if slen > qlen:
+                query_smaller = False
+
+            if query_smaller:
+                alnlength = qaln
+            else:
+                alnlength = saln
+
             out = {
                 'qseqid': qseqid, 'sseqid': sseqid, 'qlen': qlen, 'slen': slen, 'pident': pident, 'length': length,
                 'mismatch': mismatch, 'gapopen': gapopen, 'qstart': qstart, 'qend': qend,
@@ -32,20 +41,11 @@ def parse_diamond_search(diamond_search):
                 'size_diff_prop': min([qlen, slen]) / max([qlen, slen]), 'alnlen_prop': alnlength / min([qlen, slen])
             }
 
-            query_smaller = True
-            if slen > qlen:
-                query_smaller = False
-
             if evalue >= 1e-6:
                 continue
 
             if out['size_diff_prop'] < 0.85:
                 continue
-
-            if query_smaller:
-                alnlength = qaln
-            else:
-                alnlength = saln
 
             if out['alnlen_prop'] < 0.85:
                 continue
