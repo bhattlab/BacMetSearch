@@ -15,8 +15,8 @@ def cli():
 @click.option('--prefix', '-prefix', default='bacmetsearch', help='The prefix of all files in the output directory.')
 @click.option('--force/--no-force', default=False, help="Force overwriting of output directory.")
 @click.option('--threads', '-t', default=16, help="Number of threads to use for diamond searches.")
-@click.option('--max-target-seqs', '-k', default=200, help="The maximum number of target seqs returned by the diamond search.")
-@click.option('--min-percent-identity', '-mpi', default=50, help="The minimum percent identity to keep a marker match from the diamond search.")
+@click.option('--max-target-seqs', '-k', default=20, help="The maximum number of target seqs returned by the diamond search.")
+@click.option('--min-percent-identity', '-mpi', default=80, help="The minimum percent identity to keep a marker match from the diamond search.")
 @click.option('--keep-intermediate/--no-keep-intermediate', default=False, help="Keep intermediate files.")
 @click.option('--fasta-type', '-ft', type=click.Choice(['genome', 'proteome', 'markers']), default='genome', help="Select the type of fasta input.")
 def isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_identity, keep_intermediate, fasta_type):
