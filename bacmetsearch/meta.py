@@ -6,6 +6,7 @@ import sys
 import os
 from os import remove
 from bacmetsearch.prodigal import run_prodigal_multithread
+from bacmetsearch.diamond import run_diamond
 from bacmetsearch import *
 from Bio import SeqIO
 from subprocess import run, DEVNULL
