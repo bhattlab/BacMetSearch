@@ -25,6 +25,8 @@ def isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_
                max_target_seqs=max_target_seqs, min_percent_identity=min_percent_identity,
                keep_intermediate=keep_intermediate, fasta_type=fasta_type)
 
+    _isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_identity, keep_intermediate, fasta_type)
+
 
 @cli.command(short_help='Run bacmetsearch on a metagenomic assembly.')
 @click.argument('fasta', type=click.Path(exists=True))
@@ -41,6 +43,8 @@ def meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_ide
     log_params(fasta=fasta, outdir=outdir, prefix=prefix, force=force, threads=threads,
                max_target_seqs=max_target_seqs, min_percent_identity=min_percent_identity,
                keep_intermediate=keep_intermediate, fasta_type=fasta_type)
+
+    _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_identity, keep_intermediate, fasta_type)
 
 
 def log_params(**kwargs):
