@@ -6,7 +6,7 @@ import sys
 import os
 from os import remove
 from bacmetsearch.prodigal import run_prodigal_multithread
-from bacmetsearch.diamond import run_diamond
+from bacmetsearch.diamond import run_diamond, parse_diamond_search
 from bacmetsearch import *
 from Bio import SeqIO
 from subprocess import run, DEVNULL
@@ -44,9 +44,11 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
 
     diamond_exp_path = join(tmpdir, 'diamond.exp.tsv')
     run_diamond(proteome_path, diamond_exp_path, threads, max_target_seqs, min_percent_identity, BACMET2_EXPERIMENTAL_DMND)
+    parse_diamond_search(diamond_exp_path)
 
     diamond_pred_path = join(tmpdir, 'diamond.pred.tsv')
     run_diamond(proteome_path, diamond_pred_path, threads, max_target_seqs, min_percent_identity, BACMET2_PREDICTED_DMND)
+    parse_diamond_search(diamond_pred_path)
 
     if not keep_intermediate:
         shutil.rmtree(tmpdir)
