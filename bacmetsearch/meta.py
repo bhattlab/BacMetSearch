@@ -42,6 +42,8 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
         proteome_path = fasta
     prodigal_end = time.time()
 
+
+    diamond_start = time.time()
     diamond_exp_path = join(tmpdir, 'diamond.exp.tsv')
     run_diamond(proteome_path, diamond_exp_path, threads, max_target_seqs, min_percent_identity, BACMET2_EXPERIMENTAL_DMND)
     parse_diamond_search(diamond_exp_path)
@@ -49,6 +51,7 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
     diamond_pred_path = join(tmpdir, 'diamond.pred.tsv')
     run_diamond(proteome_path, diamond_pred_path, threads, max_target_seqs, min_percent_identity, BACMET2_PREDICTED_DMND)
     parse_diamond_search(diamond_pred_path)
+    diamond_end = time.time()
 
     if not keep_intermediate:
         shutil.rmtree(tmpdir)
@@ -56,6 +59,4 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
     print()
     print("COMPLETE.")
     print("Prodigal runtime: %f" % (prodigal_end-prodigal_start))
-    print("Marker gene runtime: %f" % (marker_gene_end - marker_gene_start))
-    print("Closest genome runtime: %f" % closest_genomes_time)
-    print("Gene count runtime: %f" % gene_count_time)
+    print("Diamond runtime: %f" % (diamond_end - diamond_start))

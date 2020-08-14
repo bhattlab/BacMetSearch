@@ -39,6 +39,7 @@ def _isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent
         proteome_path = fasta
     prodigal_end = time.time()
 
+    diamond_start = time.time()
     diamond_exp_path = join(tmpdir, 'diamond.exp.tsv')
     run_diamond(proteome_path, diamond_exp_path, threads, max_target_seqs, min_percent_identity,
                 BACMET2_EXPERIMENTAL_DMND)
@@ -48,8 +49,7 @@ def _isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent
     run_diamond(proteome_path, diamond_pred_path, threads, max_target_seqs, min_percent_identity,
                 BACMET2_PREDICTED_DMND)
     parse_diamond_search(diamond_pred_path)
-
-
+    diamond_end = time.time()
 
     if not keep_intermediate:
         shutil.rmtree(tmpdir)
@@ -57,3 +57,4 @@ def _isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent
     print()
     print("COMPLETE.")
     print("Prodigal runtime: %f" % (prodigal_end-prodigal_start))
+    print("Diamond runtime: %f" % (diamond_end - diamond_start))
