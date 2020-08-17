@@ -91,6 +91,7 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
     for rec in SeqIO.parse(proteome_path, "fasta"):
         if rec.id in diamond_exp_results:
             print(rec.id)
+            print(rec.description)
 
     if not keep_intermediate:
         shutil.rmtree(tmpdir)
