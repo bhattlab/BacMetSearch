@@ -87,6 +87,7 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
               diamond_pred_results[res]['evalue'], sep="\t", file=outfile)
     outfile.close()
 
+
     outseqs_exp = []
     for rec in SeqIO.parse(proteome_path, "fasta"):
         if rec.id in diamond_exp_results:
@@ -97,7 +98,7 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
 
     outseqs_pred = []
     for rec in SeqIO.parse(proteome_path, "fasta"):
-        if rec.id in diamond_exp_results:
+        if rec.id in diamond_pred_results:
             gi_number = diamond_pred_results[rec.id]['sseqid'].split('|')[1]
             rec.description = bacmet_pred_meta[gi_number]['Gene_name'] + ' ' + bacmet_pred_meta[gi_number]['Compound']
             outseqs_pred.append(rec)
