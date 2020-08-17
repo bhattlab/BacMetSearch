@@ -89,16 +89,16 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
 
     outseqs_exp = []
     for rec in SeqIO.parse(proteome_path, "fasta"):
-        bacmet_id = diamond_exp_results[res]['sseqid'].split('|')[0]
         if rec.id in diamond_exp_results:
+            bacmet_id = diamond_exp_results[rec.id]['sseqid'].split('|')[0]
             rec.description = bacmet_exp_meta[bacmet_id]['Gene_name'] + ' ' + bacmet_exp_meta[bacmet_id]['Compound']
             outseqs_exp.append(rec)
     SeqIO.write(outseqs_exp, join(outdir, prefix+'.exp.faa'), 'fasta')
 
     outseqs_pred = []
     for rec in SeqIO.parse(proteome_path, "fasta"):
-        gi_number = diamond_pred_results[res]['sseqid'].split('|')[1]
         if rec.id in diamond_exp_results:
+            gi_number = diamond_pred_results[rec.id]['sseqid'].split('|')[1]
             rec.description = bacmet_pred_meta[gi_number]['Gene_name'] + ' ' + bacmet_pred_meta[gi_number]['Compound']
             outseqs_pred.append(rec)
     SeqIO.write(outseqs_pred, join(outdir, prefix + '.pred.faa'), 'fasta')
