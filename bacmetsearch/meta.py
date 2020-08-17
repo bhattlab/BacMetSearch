@@ -56,7 +56,7 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
 
 
     bacmet_exp_meta = parse_bacmet_exp_metadata()
-    outfile = join(outdir, prefix+'.results.tsv')
+    outfile = open(join(outdir, prefix+'.results.tsv'), 'w')
     print('protein_id', 'BacMet_ID', 'Gene_name', 'Compound', sep="\t", file=outfile)
     for res in diamond_exp_results:
         bacmet_id = diamond_exp_results[res]['sseqid'].split('|')[0]
