@@ -56,7 +56,7 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
 
 
     bacmet_exp_meta = parse_bacmet_exp_metadata()
-    outfile = open(join(outdir, prefix+'.exp.results.tsv'), 'w')
+    outfile = open(join(outdir, prefix+'.exp.tsv'), 'w')
     print('protein_id', 'BacMet_ID', 'Gene_name', 'Accession', 'Organism', 'Location', 'Compound', 'QueryLength',
           'TargetLength', 'PercentIdentity', 'AlignmentLength', 'QueryAlignedLength', 'TargetAlignedLength', 'Bitscore',
           'Evalue', sep="\t", file=outfile)
@@ -72,12 +72,11 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
     outfile.close()
 
     bacmet_pred_meta = parse_bacmet_pred_metadata()
-    outfile = open(join(outdir, prefix + '.pred.results.tsv'), 'w')
+    outfile = open(join(outdir, prefix + '.pred.tsv'), 'w')
     print('protein_id', 'GI_number', 'GenBank_ID', 'Gene_name', 'Organism', 'NCBI_annotation', 'Compound', 'QueryLength',
           'TargetLength', 'PercentIdentity', 'AlignmentLength', 'QueryAlignedLength', 'TargetAlignedLength', 'Bitscore',
           'Evalue', sep="\t", file=outfile)
     for res in diamond_pred_results:
-        print(diamond_pred_results[res]['sseqid'])
         gi_number = diamond_pred_results[res]['sseqid'].split('|')[1]
         print(res, gi_number, bacmet_pred_meta[gi_number]['GenBank_ID'], bacmet_pred_meta[gi_number]['Gene_name'],
               bacmet_pred_meta[gi_number]['Organism'], bacmet_pred_meta[gi_number]['NCBI_annotation'],
@@ -87,6 +86,11 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
               diamond_pred_results[res]['saln'], diamond_pred_results[res]['bitscore'],
               diamond_pred_results[res]['evalue'], sep="\t", file=outfile)
     outfile.close()
+
+    outseqs_exp = []
+    for rec in SeqIO.parse(proteome_path, "fasta"):
+        if rec.id in diamond_exp_results:
+            print(rec.id)
 
     if not keep_intermediate:
         shutil.rmtree(tmpdir)
