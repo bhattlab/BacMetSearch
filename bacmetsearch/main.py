@@ -51,7 +51,8 @@ def meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_ide
                min_seqlength_diff=min_seqlength_diff, min_alignlength_prop=min_alignlength_prop,
                keep_intermediate=keep_intermediate, fasta_type=fasta_type)
 
-    _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_identity, min_seqlength_diff, min_alignlength_prop, keep_intermediate, fasta_type)
+    _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_identity,
+          min_seqlength_diff, min_alignlength_prop, keep_intermediate, fasta_type)
 
 
 def log_params(**kwargs):
