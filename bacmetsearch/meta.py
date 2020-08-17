@@ -77,7 +77,8 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
           'TargetLength', 'PercentIdentity', 'AlignmentLength', 'QueryAlignedLength', 'TargetAlignedLength', 'Bitscore',
           'Evalue', sep="\t", file=outfile)
     for res in diamond_pred_results:
-        gi_number = diamond_pred_results[res]['sseqid'].split('|')[0]
+        print(diamond_pred_results[res]['sseqid'])
+        gi_number = diamond_pred_results[res]['sseqid'].split('|')[1]
         print(res, gi_number, bacmet_pred_meta[gi_number]['GenBank_ID'], bacmet_pred_meta[gi_number]['Gene_name'],
               bacmet_pred_meta[gi_number]['Organism'], bacmet_pred_meta[gi_number]['NCBI_annotation'],
               bacmet_pred_meta[gi_number]['Compound'], diamond_pred_results[res]['qlen'],
