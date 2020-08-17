@@ -12,7 +12,7 @@ def run_diamond(protein_fasta_path, outfile, threads, max_target_seqs, min_perce
     run(command.split(), stdout=DEVNULL, stderr=DEVNULL)
 
 
-def parse_diamond_search(diamond_search):
+def parse_diamond_search(diamond_search, min_seqlength_diff, min_alignlength_prop):
 
     gene2bacmet = dict()
     with open(diamond_search) as infile:
@@ -38,16 +38,16 @@ def parse_diamond_search(diamond_search):
                 'qseqid': qseqid, 'sseqid': sseqid, 'qlen': qlen, 'slen': slen, 'pident': pident, 'length': length,
                 'mismatch': mismatch, 'gapopen': gapopen, 'qstart': qstart, 'qend': qend,
                 'sstart': sstart, 'send': send, 'evalue': evalue, 'bitscore': bitscore, 'qaln':qaln, 'saln':saln,
-                'size_diff_prop': min([qlen, slen]) / max([qlen, slen]), 'alnlen_prop': alnlength / min([qlen, slen])
+                'seqlength_diff': min([qlen, slen]) / max([qlen, slen]), 'alignlength_prop': alnlength / min([qlen, slen])
             }
 
             if evalue >= 1e-6:
                 continue
 
-            if out['size_diff_prop'] < 0.85:
+            if out['seqlength_diff'] < min_seqlength_diff:
                 continue
 
-            if out['alnlen_prop'] < 0.85:
+            if out['alignlength_prop'] < min_alignlength_prop:
                 continue
 
             if qseqid not in gene2bacmet:

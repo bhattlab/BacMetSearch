@@ -21,7 +21,7 @@ import pickle
 
 
 def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_identity,
-             keep_intermediate, fasta_type):
+          min_seqlength_diff, min_alignlength_prop, keep_intermediate, fasta_type):
 
     tmpdir = join(outdir, 'tmp')
 
@@ -47,11 +47,11 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
     diamond_start = time.time()
     diamond_exp_path = join(tmpdir, 'diamond.exp.tsv')
     run_diamond(proteome_path, diamond_exp_path, threads, max_target_seqs, min_percent_identity, BACMET2_EXPERIMENTAL_DMND)
-    diamond_exp_results = parse_diamond_search(diamond_exp_path)
+    diamond_exp_results = parse_diamond_search(diamond_exp_path, min_seqlength_diff, min_alignlength_prop,)
 
     diamond_pred_path = join(tmpdir, 'diamond.pred.tsv')
     run_diamond(proteome_path, diamond_pred_path, threads, max_target_seqs, min_percent_identity, BACMET2_PREDICTED_DMND)
-    diamond_pred_results = parse_diamond_search(diamond_pred_path)
+    diamond_pred_results = parse_diamond_search(diamond_pred_path, min_seqlength_diff, min_alignlength_prop,)
     diamond_end = time.time()
 
 

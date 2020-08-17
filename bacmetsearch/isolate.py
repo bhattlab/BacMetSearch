@@ -17,8 +17,8 @@ import time
 from multiprocessing import Pool
 import pickle
 
-def _isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_identity, keep_intermediate, fasta_type):
-
+def _isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_identity,
+             min_seqlength_diff, min_alignlength_prop, keep_intermediate, fasta_type):
     tmpdir = join(outdir, 'tmp')
 
     if force and isdir(outdir):
@@ -43,18 +43,86 @@ def _isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent
     diamond_exp_path = join(tmpdir, 'diamond.exp.tsv')
     run_diamond(proteome_path, diamond_exp_path, threads, max_target_seqs, min_percent_identity,
                 BACMET2_EXPERIMENTAL_DMND)
-    parse_diamond_search(diamond_exp_path)
+    diamond_exp_results = parse_diamond_search(diamond_exp_path, min_seqlength_diff, min_alignlength_prop, )
 
     diamond_pred_path = join(tmpdir, 'diamond.pred.tsv')
     run_diamond(proteome_path, diamond_pred_path, threads, max_target_seqs, min_percent_identity,
                 BACMET2_PREDICTED_DMND)
-    parse_diamond_search(diamond_pred_path)
+    diamond_pred_results = parse_diamond_search(diamond_pred_path, min_seqlength_diff, min_alignlength_prop, )
     diamond_end = time.time()
+
+    bacmet_exp_meta = parse_bacmet_exp_metadata()
+    outfile = open(join(outdir, prefix + '.exp.tsv'), 'w')
+    print('protein_id', 'BacMet_ID', 'Gene_name', 'Accession', 'Organism', 'Location', 'Compound', 'QueryLength',
+          'TargetLength', 'PercentIdentity', 'AlignmentLength', 'QueryAlignedLength', 'TargetAlignedLength', 'Bitscore',
+          'Evalue', sep="\t", file=outfile)
+    for res in diamond_exp_results:
+        bacmet_id = diamond_exp_results[res]['sseqid'].split('|')[0]
+        print(res, bacmet_id, bacmet_exp_meta[bacmet_id]['Gene_name'], bacmet_exp_meta[bacmet_id]['Accession'],
+              bacmet_exp_meta[bacmet_id]['Organism'], bacmet_exp_meta[bacmet_id]['Location'],
+              bacmet_exp_meta[bacmet_id]['Compound'], diamond_exp_results[res]['qlen'],
+              diamond_exp_results[res]['slen'], diamond_exp_results[res]['pident'],
+              diamond_exp_results[res]['length'], diamond_exp_results[res]['qaln'],
+              diamond_exp_results[res]['saln'], diamond_exp_results[res]['bitscore'],
+              diamond_exp_results[res]['evalue'], sep="\t", file=outfile)
+    outfile.close()
+
+    bacmet_pred_meta = parse_bacmet_pred_metadata()
+    outfile = open(join(outdir, prefix + '.pred.tsv'), 'w')
+    print(
+    'protein_id', 'GI_number', 'GenBank_ID', 'Gene_name', 'Organism', 'NCBI_annotation', 'Compound', 'QueryLength',
+    'TargetLength', 'PercentIdentity', 'AlignmentLength', 'QueryAlignedLength', 'TargetAlignedLength', 'Bitscore',
+    'Evalue', sep="\t", file=outfile)
+    for res in diamond_pred_results:
+        gi_number = diamond_pred_results[res]['sseqid'].split('|')[1]
+        print(res, gi_number, bacmet_pred_meta[gi_number]['GenBank_ID'], bacmet_pred_meta[gi_number]['Gene_name'],
+              bacmet_pred_meta[gi_number]['Organism'], bacmet_pred_meta[gi_number]['NCBI_annotation'],
+              bacmet_pred_meta[gi_number]['Compound'], diamond_pred_results[res]['qlen'],
+              diamond_pred_results[res]['slen'], diamond_pred_results[res]['pident'],
+              diamond_pred_results[res]['length'], diamond_pred_results[res]['qaln'],
+              diamond_pred_results[res]['saln'], diamond_pred_results[res]['bitscore'],
+              diamond_pred_results[res]['evalue'], sep="\t", file=outfile)
+    outfile.close()
+
+    outseqs_exp = []
+    for rec in SeqIO.parse(proteome_path, "fasta"):
+        if rec.id in diamond_exp_results:
+            bacmet_id = diamond_exp_results[rec.id]['sseqid'].split('|')[0]
+            rec.description = bacmet_exp_meta[bacmet_id]['Gene_name'] + ' ' + bacmet_exp_meta[bacmet_id]['Compound']
+            outseqs_exp.append(rec)
+    SeqIO.write(outseqs_exp, join(outdir, prefix + '.exp.faa'), 'fasta')
+
+    outseqs_pred = []
+    for rec in SeqIO.parse(proteome_path, "fasta"):
+        if rec.id in diamond_pred_results:
+            gi_number = diamond_pred_results[rec.id]['sseqid'].split('|')[1]
+            rec.description = bacmet_pred_meta[gi_number]['Gene_name'] + ' ' + bacmet_pred_meta[gi_number]['Compound']
+            outseqs_pred.append(rec)
+    SeqIO.write(outseqs_pred, join(outdir, prefix + '.pred.faa'), 'fasta')
 
     if not keep_intermediate:
         shutil.rmtree(tmpdir)
 
     print()
     print("COMPLETE.")
-    print("Prodigal runtime: %f" % (prodigal_end-prodigal_start))
+    print("Prodigal runtime: %f" % (prodigal_end - prodigal_start))
     print("Diamond runtime: %f" % (diamond_end - diamond_start))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
