@@ -7,7 +7,9 @@ A command line tool to perform local DIAMOND searches against the BacMet databas
 
 Just type in 
     
-    pip install bacmetsearch
+    git clone https://github.com/bhattlab/BacMetSearch.git
+    cd BacMetSearch
+    pip install .
 
 That's it, you are ready to go!
 
