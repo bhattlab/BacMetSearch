@@ -57,10 +57,12 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
 
     bacmet_exp_meta = parse_bacmet_exp_metadata()
     outfile = open(join(outdir, prefix+'.results.tsv'), 'w')
-    print('protein_id', 'BacMet_ID', 'Gene_name', 'Compound', sep="\t", file=outfile)
+    print('protein_id', 'BacMet_ID', 'Gene_name', 'Accession', 'Organism', 'Location', 'Compound', sep="\t", file=outfile)
     for res in diamond_exp_results:
         bacmet_id = diamond_exp_results[res]['sseqid'].split('|')[0]
-        print(res, bacmet_id, bacmet_exp_meta[bacmet_id]['Gene_name'], bacmet_exp_meta[bacmet_id]['Compound'], sep="\t", file=outfile)
+        print(res, bacmet_id, bacmet_exp_meta[bacmet_id]['Gene_name'], bacmet_exp_meta[bacmet_id]['Accession'],
+              bacmet_exp_meta[bacmet_id]['Organism'], bacmet_exp_meta[bacmet_id]['Location'],
+              bacmet_exp_meta[bacmet_id]['Compound'], sep="\t", file=outfile)
         print(res, diamond_exp_results[res])
     outfile.close()
 
