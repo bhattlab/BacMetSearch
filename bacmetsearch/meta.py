@@ -55,7 +55,7 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
 
 
     for res in diamond_exp_results:
-        print(res)
+        print(res, diamond_exp_results)
 
     if not keep_intermediate:
         shutil.rmtree(tmpdir)
