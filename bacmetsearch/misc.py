@@ -9,7 +9,7 @@ def parse_bacmet_exp_metadata():
         for line in infile:
             line = line.strip().split('\t')
             out = {header[i]:line[i] for i in range(len(line))}
-            outdict[line['BacMet_ID']] = out
+            outdict[out['BacMet_ID']] = out
     return outdict
 
 
@@ -21,6 +21,6 @@ def parse_bacmet_pred_metadata():
         for line in infile:
             line = line.strip().split('\t')
             out = {header[i]:line[i] for i in range(len(line))}
-            outdict[line['GI_number']] = out
+            outdict[out['GI_number']] = out
 
     return outdict
