@@ -56,5 +56,4 @@ def parse_diamond_search(diamond_search):
                 if out['bitscore'] > gene2bacmet[qseqid]['bitscore']:
                     gene2bacmet[qseqid] = out
 
-    print(gene2bacmet)
-    #SeqIO.write(records, outfile, 'fasta')
+    return gene2bacmet
