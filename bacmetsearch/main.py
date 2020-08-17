@@ -44,7 +44,7 @@ def isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_
 @click.option('--min-alignlength-prop', '-msd', default=0.85, help="The minimum proportion of the shorter sequence that is aligned to the target.")
 @click.option('--keep-intermediate/--no-keep-intermediate', default=False, help="Keep intermediate files.")
 @click.option('--fasta-type', '-ft', type=click.Choice(['genome', 'proteome', 'markers']), default='genome', help="Select the type of fasta input.")
-def isolate(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_identity, min_seqlength_diff, min_alignlength_prop, keep_intermediate, fasta_type):
+def meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_identity, min_seqlength_diff, min_alignlength_prop, keep_intermediate, fasta_type):
     """A click access point for the run module. This is used for creating the command line interface."""
     log_params(fasta=fasta, outdir=outdir, prefix=prefix, force=force, threads=threads,
                max_target_seqs=max_target_seqs, min_percent_identity=min_percent_identity,
