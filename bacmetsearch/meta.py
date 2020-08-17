@@ -7,6 +7,7 @@ import os
 from os import remove
 from bacmetsearch.prodigal import run_prodigal_multithread
 from bacmetsearch.diamond import run_diamond, parse_diamond_search
+from bacmetsearch.misc import *
 from bacmetsearch import *
 from Bio import SeqIO
 from subprocess import run, DEVNULL
@@ -54,8 +55,15 @@ def _meta(fasta, outdir, prefix, force, threads, max_target_seqs, min_percent_id
     diamond_end = time.time()
 
 
+    bacmet_exp_meta = parse_bacmet_exp_metadata()
+    outfile = join(outdir, prefix+'.results.tsv')
+    print('protein_id', 'BacMet_ID', 'Gene_name', 'Compound', sep="\t", file=outfile)
     for res in diamond_exp_results:
+        bacmet_id = diamond_exp_results[res]['sseqid'].split('|')[0]
+        print(res, bacmet_id, bacmet_exp_meta[bacmet_id]['Gene_name'], bacmet_exp_meta[bacmet_id]['Compound'], sep="\t", file=outfile)
         print(res, diamond_exp_results[res])
+    outfile.close()
+
 
     if not keep_intermediate:
         shutil.rmtree(tmpdir)

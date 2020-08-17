@@ -1,7 +1,7 @@
 from bacmetsearch import *
 
 
-def parse_bacmet_exp_database():
+def parse_bacmet_exp_metadata():
 
     outdict = dict()
     with open(BACMET2_EXPERIMENTAL_META) as infile:
@@ -13,7 +13,7 @@ def parse_bacmet_exp_database():
     return outdict
 
 
-def parse_bacmet_pred_database():
+def parse_bacmet_pred_metadata():
 
     outdict = dict()
     with open(BACMET2_PREDICTED_META) as infile:
