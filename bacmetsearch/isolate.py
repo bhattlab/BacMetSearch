@@ -7,6 +7,7 @@ import os
 from bacmetsearch.prodigal import run_prodigal
 from bacmetsearch.diamond import run_diamond
 from bacmetsearch import *
+from bacmetsearch.misc import *
 from Bio import SeqIO
 from subprocess import run, DEVNULL
 from collections import defaultdict
