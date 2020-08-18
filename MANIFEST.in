@@ -1,6 +1,6 @@
-bacmetsearch/data/BacMet2_EXP_database.dmnd
-bacmetsearch/data/BacMet2_EXP.mapping.tsv
-bacmetsearch/data/BacMet2_predicted_database.dmnd
-bacmetsearch/data/BacMet2_PRE.mapping.tsv
-include genomesearch/bin/prodigal.linux
-include genomesearch/bin/diamond
+include bacmetsearch/data/BacMet2_EXP_database.dmnd
+include bacmetsearch/data/BacMet2_EXP.mapping.tsv
+include bacmetsearch/data/BacMet2_predicted_database.dmnd
+include bacmetsearch/data/BacMet2_PRE.mapping.tsv
+include bacmetsearch/bin/prodigal.linux
+include bacmetsearch/bin/diamond
