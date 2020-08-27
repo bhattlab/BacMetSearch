@@ -5,7 +5,7 @@ import click
 import sys
 import os
 from bacmetsearch.prodigal import run_prodigal
-from bacmetsearch.diamond import run_diamond
+from bacmetsearch.diamond import run_diamond, parse_diamond_search
 from bacmetsearch import *
 from bacmetsearch.misc import *
 from Bio import SeqIO
